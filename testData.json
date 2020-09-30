@@ -1,0 +1,38 @@
+{
+  "transactions": {
+    "3rV4ruMzImLadkYYIWrz": {
+      "Amount": 27.91,
+      "Cash": false,
+      "Comment": "",
+      "Date": 1601248654185,
+      "Description": "Starbucks (coffee and mug)",
+      "Type": [
+        "Eating Out",
+        "Extra"
+      ]
+    },
+    "dPIMzjR1QEFrPJrpaKWj" : {
+      "Amount": 1230,
+      "Cash": false,
+      "Comment": "",
+      "Date": 1600820775535,
+      "Description": "Laptop",
+      "Type": [
+        "BigPurchase",
+        "Extra"
+      ]
+    },
+    "z8ZRQEIynawCxcbwyBZG": {
+      "Amount": 84.38,
+      "Cash": false,
+      "Comment": "",
+      "Date": 1601252127226,
+      "Description": "Thai Food",
+      "Type": [
+        "EatingOut",
+        "Extra",
+        "Food"
+      ]
+    }
+  }
+}
