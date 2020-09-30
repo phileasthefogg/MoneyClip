@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Button, ActivityIndicator } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
@@ -34,67 +34,45 @@ const getTransactions = async () => {
   })
 }
 
-export default function App(props, { navigation, route }) {
+const MainStack = (props, { navigation, route }) => {
 
   const [count, setCount] = useState(0);
 
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
+  const [update, setUpdate] = useState(true);
 
   useEffect(() => {
     setCount(count + 1);
-    /*REALTIME DATABASE IMPLEMENTATION */
     console.log('usingEffect', count)
-    // setLoading(true);
-    /** */
-    // database.ref('transactions/').on('value', (snapshot) => {
-    //   console.log('new records loading',loading);
-    //   if (snapshot.val()) {
-    //     setLoading(true);
-    //     let keys = Object.keys(snapshot.val());
-    //     let values = Object.values(snapshot.val());
-    //     let records = [];
-    //     for (var x = 0; x <= keys.length - 1; x++) {
-    //       let record = values[x];
-    //       record.id = keys[x];
-    //       records.push(record);
-    //     }
-    //     setList(records)
-    //   }
-    //   if (loading) {
-    //     setLoading(false);
-    //   }
-    // })
-    /** */
-
-    getTransactions()
-      .then((result) => {
-        console.log(result.length);
-        let keys = Object.keys(result.val());
-        let values = Object.values(result.val());
-        let records = [];
-        for (var x = 0; x <= keys.length - 1; x++) {
-          let record = values[x];
-          record.id = keys[x];
-          records.push(record);
-        }
-        setList(records);
+    const listener = database.ref('transactions/').on('value', (snapshot) => {
+      console.log('new records loading',loading);
+      setLoading(true);
+      setList([]);
+      let updatedList = [];
+      snapshot.forEach((doc) => {
+        let transaction = doc.val();
+        transaction.id = doc.key
+        updatedList.push(transaction);
       })
-      .catch((err) => {
-        console.log('ERROR GETTING TRANSACTIONS: ', err)
-      })
-      .finally(() => {
-        console.log('done processing transactions', list.length)
+      setList(updatedList);
+      if (loading) {
         setLoading(false);
-      })
-    return (function cleanup() {
+      }
+    },[])
+    return (() => {
       console.log('useEffect cleanup')
-    })()
-  }, []);
+    })
+  }, [update]);
 
   useFocusEffect(() => {
     console.log('focus loading: ', loading)
-  }, [])
+    if (props.route.params && update) {
+      console.log('reset called');
+      setUpdate(!!update);
+      setTimeout(()=>{console.log(list.length), 1000})
+    }
+  })
 
   if (!loading) {
     return (
@@ -126,3 +104,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default MainStack;

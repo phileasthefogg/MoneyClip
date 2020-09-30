@@ -61,23 +61,28 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import MainStackScreen from './MainStack';
+import ContextStack from './ContextStack';
 import TransactionForm from './components/TransactionForm'
 
 import { NavigationContainer } from '@react-navigation/native';
+
+import { TransactionProvider } from './components/providers/TransactionProvider';
 
 const RootStack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-    <RootStack.Navigator mode="modal">
-      <RootStack.Screen
-        name="MoneyClip"
-        options={{headerStyle: {height: 0}, title: ''}}
-        component={MainStackScreen}
-      />
-      <RootStack.Screen name="Form" options={{title: 'Create New Transaction'}} component={TransactionForm} />
-    </RootStack.Navigator>
-    </NavigationContainer>
+    <TransactionProvider>
+      <NavigationContainer>
+        <RootStack.Navigator mode="modal">
+          <RootStack.Screen
+            name="MoneyClip"
+            options={{ headerStyle: { height: 0 }, title: '' }}
+            component={ContextStack}
+          />
+          <RootStack.Screen name="Form" options={{ title: 'Create New Transaction' }} component={TransactionForm} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </TransactionProvider>
   );
 }
