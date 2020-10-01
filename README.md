@@ -1,6 +1,15 @@
 # MoneyClip
 
-## On top
+## Task List
+- Research using D3 charts in react-native.  Create pie chart to display on Home<br>
+- Create transaction item component<br>
+- Fix styling and scroll behavior on transactionList<br>
+- Add field validation/sanitization on user input in Form<br>
+
+
+
+## Other Notes
+- [solved] Finally got Context working -- just need to figure out how to get my MainStack to rerender itself when new props come down. seems like it should be simple but nothing about this project has been as simple as i thought it would be.
 - Got Navigation to a pretty good spot -- One navigator for normal app navigation, centered around the home screen, the other navigator to allow me to create different screens to use as modals (i.e. new transaction form)
   -  Both navigators seem to work well and also plahy nice together
 - Continue Building

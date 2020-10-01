@@ -123,7 +123,7 @@ const Form = ({navigation}) => {
         </View>
           <TextInput style={styles.inputField} label="Comment" name="Comment" value={form.Comment} placeholder="Comment" onChangeText={(text) => { updateField('Comment', text) }} />
 
-          <Switch style={{alignSelf:'flex-end'}} onValueChange={(v) => { toggleCash(!cash); updateField('Cash', cash) }} value={cash}></Switch>
+          <Switch style={{alignSelf:'flex-end'}} onValueChange={(v) => { console.log(v); toggleCash(v); updateField('Cash', v) }} value={cash}></Switch>
       </View>
 
       <Toast visible={visibleToast} message="Saved Transaction" />

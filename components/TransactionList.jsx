@@ -1,34 +1,35 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Dimensions } from 'react-native';
 import Header from './Header';
-
+import ListItem from './TransactionListItem';
 
 const width = Dimensions.get('window').width;
 
-const renderItem = (list) => {
-  return (
-    <View style={styles.row}>
-      <Text style={{ color: '#064789' }}>
-        {list.item.Description}
-      </Text>
-    </View>
-  );
-}
+const TransactionList = (props) => {
+  let transactions = props.transactions;
 
+  let listStyle = {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 10,
+    padding: 1,
+    borderWidth: 3
+  }
+  if (props.mini) {
+    listStyle.maxHeight = 255;
+    listStyle.borderWidth = 0
+  }
 
-const TransactionList = (props, { navigation, route }) => {
-  // console.log((props.mini) ? 'Minified Transactions!' : 'Normal Transactions');
-  //the following is kinda stupid -- in order to get the same transaction info from the same location (despite possibly different source locations) while rendering this component, I am passing a prop called 'route' from the Home cmp which just passes along the route obj
-  let transactions = props.route.params.transactions;
-  // console.log('List', transactions.length)
   return (
     <View>
       {(!props.mini) ? <Header navigation={props.navigation}/> : null}
-      <View style={[styles.container, { borderWidth: (props.mini) ? 0 : 3 }]}>
+      <View style={listStyle}>
         <FlatList
           data={transactions}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          renderItem={(element) => <ListItem item={element.item} />}
+          keyExtractor={(element) => element.id}
           style={styles.list}
         />
       </View>
@@ -39,29 +40,10 @@ const TransactionList = (props, { navigation, route }) => {
 export default TransactionList;
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: (width * .05),
-    top: 10,
-    width: width - (width * .1),
-    maxHeight: 400,
-  },
   list: {
-
-    borderRadius: 15,
+    borderRadius: 5,
     borderWidth: 2,
     borderColor: '#A5BE00',
-
-    padding: 10,
-    backgroundColor: '#EBF2FA'
+    backgroundColor: '#EBF2FA',
   },
-  row: {
-    width: width - (width * .15),
-    margin: .25,
-    borderRadius: 50,
-    borderBottomWidth: 1
-  }
 })

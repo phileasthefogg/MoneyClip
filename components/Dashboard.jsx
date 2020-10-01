@@ -4,9 +4,9 @@ import Header from './Header';
 
 const width = Dimensions.get('window').width;
 
-const Dashboard = (props, { navigation, route }) => {
+const Dashboard = (props) => {
   // console.log((props.mini) ? 'Minified Dashboard!' : 'Normal Dashboard');
-  const transactions = props.route.params.transactions;
+  const transactions = props.transactions || props.route.params.transactions;
   // console.log(transactions);
   // console.log('Dash', transactions.length)
   return ( transactions ?
