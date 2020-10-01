@@ -21,6 +21,7 @@ const TransactionProvider = (props) => {
         transaction.id = doc.key
         updatedList.push(transaction);
       })
+      updatedList = updatedList.sort((a, b) => b.Date - a.Date)
       updateTransactions(updatedList);
       return updatedList;
     })

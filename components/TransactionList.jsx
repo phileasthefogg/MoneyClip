@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, FlatList, Dimensions } from 'react-nati
 import Header from './Header';
 import ListItem from './TransactionListItem';
 
-const width = Dimensions.get('window').width;
+const {width, height} = Dimensions.get('window');
 
 const TransactionList = (props) => {
   let transactions = props.transactions;
@@ -15,7 +15,8 @@ const TransactionList = (props) => {
     justifyContent: 'center',
     top: 10,
     padding: 1,
-    borderWidth: 3
+    borderWidth: 3,
+    height: height * .87
   }
   if (props.mini) {
     listStyle.maxHeight = 255;

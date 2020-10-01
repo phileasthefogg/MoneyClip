@@ -1,12 +1,37 @@
 # MoneyClip
 
-## Task List
+## Task List (On Top)
+-> Create bar chart summarizing data by month<br>
+  + Created chart and bars displaying current and previous 6 months<br>
+  + Added some functions to Dashboard in order to process data before sending on as props to chart itself<br>
+  - Add y axis (scaled) and x axis to chart<br>
+  - Maybe some extra styling so it looks cleanish<br>
 - Research using D3 charts in react-native.  Create pie chart to display on Home<br>
-- Create transaction item component<br>
-- Fix styling and scroll behavior on transactionList<br>
 - Add field validation/sanitization on user input in Form<br>
 
+### Home
+- Think of different things to use the Home screen for as it seems like the Dashboard page will copy this same existing design
+- Move 'Create Transaction' button to drawer navigation
 
+### Dashboard
+- Pie Chart using D3
+- Paging behavior to scroll between dashboards in 'mini' view
+- Styling for 'normal' view to display charts in scrollable list
+- Touching any graphic on any chart will update a list of records to display underneath pertaining to the data summarized by the graphic that was selected.
+
+### Transaction List
+- TransactionList includes a collapsable header which displays summary data
+- Item sort functionality
+- Clicking on a record in the transaction list brings the user to an expanded view of that transaction
+- User should be able to edit and delete existing transactions
+
+### Transaction Form
+- Styling is kinda shit -- doesnm't need to be a whole lot more but I think we could do better
+- User input validation so we don't get weird results in database
+  - Include alerts so that the user knows they made a mistake
+- Fix issue where state already exists when form page is opened for a second time.
+- Consider adding 'tag' recommendations to your users
+- Reformat data insert functions to use proper lowercase fieldname conventions
 
 ## Other Notes
 - [solved] Finally got Context working -- just need to figure out how to get my MainStack to rerender itself when new props come down. seems like it should be simple but nothing about this project has been as simple as i thought it would be.

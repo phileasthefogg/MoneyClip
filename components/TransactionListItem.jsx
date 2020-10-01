@@ -5,7 +5,7 @@ const width = Dimensions.get('window').width;
 const TransactionListItem = (props) => {
   const itemAmt = props.item.Amount.toFixed(2);
   const itemDate = new Date(props.item.Date);
-  const dateString = itemDate.getMonth() + '/' + itemDate.getDate() + '/' + itemDate.getFullYear();
+  const dateString = itemDate.getMonth()+1 + '/' + itemDate.getDate() + '/' + itemDate.getFullYear();
   const typeString = props.item.Type.join(', ');
   return (
     <View style={styles.container}>
@@ -33,8 +33,8 @@ export default TransactionListItem;
 
 const styles = StyleSheet.create({
   container: {
-    // width: width - (width * .15),
     marginTop: 2,
+    paddingTop: 2,
     paddingBottom: 6,
     borderRadius: 5,
     borderWidth: 1,
