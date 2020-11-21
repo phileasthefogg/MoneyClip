@@ -1,47 +1,78 @@
-import React, { useState, useContext } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, Button, ScrollView, Dimensions } from 'react-native';
+import React, {useState} from 'react';
+// import { Text } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import Header from './Header';
 import Dashboard from './Dashboard';
 import TransactionList from './TransactionList';
 
-import { useFocusEffect, useIsFocused } from '@react-navigation/native'
-import {AuthenticationContext} from '../components/providers/AuthenticationProvider'
-// import firestore from '../firebase/firestore';
-// const transactions = firestore.collection;
+import styled from 'styled-components/native';
 
-const width = Dimensions.get('window').width;
+const Container = styled.View`
+  display: flex;
+  flex: 1;
+  backgroundColor: #555459;
+  alignItems: center;
+`;
+
+const NewLabel = styled.Text`
+  fontSize: 36px;
+  fontWeight: bold;
+  color: white;
+  text-shadow: 2px 2px 1px #8A8A8D;
+`;
 
 const Home = (props) => {
-  const colors = {
-    darkBlue: '#00249C',
-    yellow: '#F4AF23',
-    turqouise: '#A7E6D7',
-    red: '#E47359',
-    grey: '#39444A'
-  }
-  const AuthContext = useContext(AuthenticationContext)
+  const [buttonOpacity, setButtonOpacity] = useState(1)
+  const NewTransaction = styled.View`
+    position: absolute;
+    backgroundColor: #C8BCA4;
+    borderWidth: .25px;
+    borderTopRightRadius: 50px;
+    borderTopLeftRadius: 15px;
+    borderBottomRightRadius: 50px;
+    borderBottomLeftRadius: 50px;
+    display: flex;
+    alignItems: center;
+    justifyContent: center;
+    height: 60px;
+    width: 60px;
+    bottom: 20px;
+    right: 20px;
+    opacity: ${buttonOpacity};
+  `;
   return (
-    <View style={styles.container}>
-      <Header navigation={props.navigation} color={colors.yellow}/>
-      {/*passing entire navigation object to subcomponent Dashboard */}
-      <Dashboard mini={true} navigation={props.navigation} route={props.route} transactions={props.transactions} />
-      <TransactionList transactions={props.transactions} mini={true} route={props.route} />
-      <View style={{position: 'absolute', backgroundColor: 'transparent', borderWidth: 1, borderRadius: 50, height: 70, width: 70, bottom: 20, right: 20}}>
-
-      </View>
-    </View>
+    <Container >
+      <StatusBar style="light" />
+      <Header
+        navigation={props.navigation}
+      />
+      <Dashboard
+        mini={true}
+        navigation={props.navigation}
+        route={props.route}
+        transactions={props.transactions}
+      />
+      <TransactionList
+        transactions={props.transactions}
+        mini={true}
+        route={props.route}
+        toggleOpacity={setButtonOpacity}
+      />
+      {/* </TouchableOpacity> */}
+      <NewTransaction>
+        <TouchableOpacity
+          style={{flex:1, justifyContent: 'center'}}
+          onPress={() => {
+            props.navigation.navigate('Form')
+          }}
+        >
+          <NewLabel>+</NewLabel>
+        </TouchableOpacity>
+      </NewTransaction>
+    </Container>
   )
 }
 
 export default Home;
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flex: 1,
-    backgroundColor: '#EAE6DA',
-    // backgroundColor: '#ebf2fa',
-    // backgroundColor: 'white',
-    alignItems: 'center',
-  }
-})
