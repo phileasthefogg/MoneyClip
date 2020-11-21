@@ -1,22 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import {firebase} from './firebase/firebase'
 
 
 import { createStackNavigator } from '@react-navigation/stack';
-// import MainStackScreen from './MainStack';
-import ContextStack from './ContextStack';
-import TransactionForm from './components/TransactionForm'
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
-import { TransactionProvider } from './components/providers/TransactionProvider';
 import {AuthenticationContext} from './components/providers/AuthenticationProvider'
 
-const RootStack = createStackNavigator();
-import LoginFlow from './Login'
 import Login from './pages/LoginScreen';
 import Signup from './components/SignUp';
 import Main from './pages/Main';
@@ -31,6 +23,7 @@ const AuthLoginContainer = createAppContainer(AuthSwitchNavigator)
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const authContext = useMemo(() => ({
     signIn: async (email, password) => {
@@ -79,8 +72,7 @@ const App = () => {
     user: user
   }))
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const AuthContext = useContext(AuthenticationContext);
+
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
