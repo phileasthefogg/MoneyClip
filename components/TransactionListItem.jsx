@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View, Text, StyleSheet } from 'react-native';
+import {Pressable, Dimensions, View, Text, StyleSheet } from 'react-native';
 
 const width = Dimensions.get('window').width;
 const TransactionListItem = (props) => {
@@ -8,7 +8,8 @@ const TransactionListItem = (props) => {
   const dateString = itemDate.getMonth()+1 + '/' + itemDate.getDate() + '/' + itemDate.getFullYear();
   const typeString = props.item.Type.join(', ');
   return (
-    <View style={styles.container}>
+      <Pressable onPress={() => {props.clickHandler(props.item)}}>
+    <View style={styles.container} >
       <View style={styles.detail}>
         <View style={styles.header}>
           <Text style={styles.headerField}>
@@ -26,6 +27,7 @@ const TransactionListItem = (props) => {
         <Text style={styles.amountField}>{'$'+itemAmt}</Text>
       </View>
     </View>
+      </Pressable>
   )
 }
 
@@ -37,16 +39,17 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 6,
     borderRadius: 5,
-    borderWidth: 1,
+    // borderWidth: .25,
     display: 'flex',
     flexDirection: 'row',
+    backgroundColor: 'white'
   },
   detail: {
-    paddingLeft: 30,
-    minWidth: '70%'
+    paddingLeft: 20,
+    minWidth: '80%'
   },
   amountBox: {
-    minWidth: '30%',
+    minWidth: '20%',
     display:'flex',
     alignItems: 'center',
     justifyContent: 'center'

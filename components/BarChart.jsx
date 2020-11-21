@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
-
+import Underlay from './BarChartUnderlay';
 
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 
 const formatter = Intl.DateTimeFormat("en", {month: "short"})
 
-/*
-exampleProp
-{
-  10: 12312
-  11: 123131
-  12: 123131
-  1: 12313
-}
-
-*/
-
+//calculates which months to include given our data
 const getRecentMonths = (array) => {
   let currentMonth = new Date().getMonth();
   let result = array.filter((el, i) => {
@@ -31,38 +21,38 @@ const lerp = (v0, v1, t) => {
 }
 
 const BarChart = (props) => {
-  // console.log(props.data.length)
-  let transactionsByMonth = getRecentMonths(props.data)
+  let transactionsByMonth = getRecentMonths(props.data);
   let maxY = Math.max(...transactionsByMonth);
   let currentMonth = new Date().getMonth();
-  // console.log(monthStr);
   let barWidth = (props.w * .75) / 7;
+  let height = props.h;
   return (
     <View style={styles.container}>
+      <View style={styles.background} >
+      <Underlay minY={0} maxY={maxY} step={barWidth} height={200} transactionsByMonth={transactionsByMonth}/>
       <View style={styles.chart}>
         {transactionsByMonth.map((month, i) => {
           let monthStr = formatter.format(new Date().setMonth(currentMonth + i - 6));
           if (month) {
             let contentStyle = {
-              backgroundColor: 'green',
+              backgroundColor: '#88B04B',
               left: i * barWidth,
-              height: lerp(0, props.h, month / maxY)
+              height: lerp(0, 200, month / maxY)
             }
             return (
-              <View style={ styles.barContainer }>
-                <View style={[styles.bar, contentStyle, { display: 'flex' }]} key={month} />
-                <Text style={{ left: i * barWidth + 10, top: '50%', fontSize: 12 }}>{monthStr}</Text>
+              <View style={ styles.barContainer } key={monthStr}>
+                <View style={[styles.bar, contentStyle]}  />
               </View>
             )
           } else {
             return (
-              <View style={ styles.barContainer }>
-                <View style={[styles.bar, { display: 'flex', height: 0 }]} key={month} />
-                <Text style={{ left: i * barWidth + 10, top: '50%', fontSize: 12 }}>{monthStr}</Text>
+              <View style={ styles.barContainer } key={monthStr}>
+                <View style={styles.bar} />
               </View>
             )
           }
         })}
+      </View>
       </View>
     </View>
   )
@@ -70,19 +60,18 @@ const BarChart = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
     display: 'flex',
     backgroundColor: 'white',
     height: '100%',
     width: '100%',
-    padding: '5%'
+    margin: '10%'
   },
   chart: {
     height: '100%',
     width: '100%',
-    // left: '5%'
-    // backgroundColor: 'yellow',
-    // display: 'flex',
-    // flexDirection: 'row'
+    left: 22,
+    bottom: 20
   },
   bar: {
     backgroundColor: 'rebeccapurple',
@@ -90,14 +79,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     bottom: 0,
     width: 20,
-    height: 10,
-    margin: 10,
+    // height: 10,
+    marginLeft: 11,
+    marginRight: 10,
     borderWidth: 1
   },
   barContainer: {
     position: 'absolute',
     bottom: 0,
     display: 'flex',
+    backgroundColor: 'pink'
   }
 })
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Button, Switch, ToastAndroid } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Toast from './ToastAndroid'
-import firestore from '../firebase/firestore';
-const transactions = firestore.collection;
-const database = firestore.app.database();
+import {firebaseConnection} from '../firebase/firebase';
+// const transactions = firestore.collection;
+const database = firebaseConnection.database();
 import Tags from 'react-native-tags'
 
 const generateHash = () => {
@@ -17,14 +17,10 @@ const generateHash = () => {
   return newID;
 }
 
-const createRecord = async (newEntry) => {
-  // console.log(newEntry);
-  let newID = generateHash();
-  database.ref('transactions/').push(newEntry);
-  // await transactions.add(newEntry);
-}
 
-const Form = ({navigation}) => {
+
+const Form = (props) => {
+  console.log('FORMKEYS', Object.keys(props))
   const [form, updateForm] = useState({});
   const [datePicker, toggleDatePicker] = useState(false);
   const [amt, updateAmt] = useState(0);
@@ -33,7 +29,12 @@ const Form = ({navigation}) => {
   const [visibleToast, setvisibleToast] = useState(false);
 
   useEffect(() => setvisibleToast(false), [visibleToast]);
-
+  const createRecord = async (newEntry) => {
+    // console.log(newEntry);
+    let newID = generateHash();
+    database.ref(`/users/${props.user.uid}/transactions/`).push(newEntry);
+    // await transactions.add(newEntry);
+  }
   const updateType = (string) => {
     let types = string.split(', ');
     let newForm = form;
@@ -135,7 +136,7 @@ const Form = ({navigation}) => {
             .then((result) => {
               // console.log('successfully added record');
               setvisibleToast(true);
-              navigation.navigate('MoneyClip', {reset: 'true'});
+              props.navigation.navigate('MoneyClip', {reset: 'true'});
             })
             .catch((err) => {
               console.error('ERROR OCCURED', err)

@@ -1,88 +1,54 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-// import { createDrawerNavigator } from '@react-navigation/drawer';
-// import { NavigationContainer } from '@react-navigation/native';
-// import Home from './components/Home';
-// import TransactionList from './components/TransactionList';
-// import Header from './components/Header';
-// import Dashboard from './components/Dashboard';
-
-// import firestore from './firebase/firestore';
-// const transactions = firestore.collection;
-
-// const Drawer = createDrawerNavigator();
-
-// export default function App() {
-//   const [loading, setLoading] = useState(true);
-//   const [todos, setTodos] = useState([]);
-
-//   useEffect(() => {
-//     return transactions.onSnapshot(querySnapshot => {
-//       const list = [];
-//       querySnapshot.forEach(doc => {
-//         let item = doc.data();
-//         list.push(item);
-//       });
-//       setTodos(list);
-//       if (loading) {
-//         setLoading(false);
-//       }
-//     });
-//   }, []);
-
-//   if (!loading) {
-//     return (
-//       <NavigationContainer>
-//         <Drawer.Navigator drawerPosition="left">
-//           <Drawer.Screen name="Home" screenOptions={{ drawerLabel: 'Home' }} component={Home} initialParams={{ transactions: todos }} />
-
-//           <Drawer.Screen name="TransactionList" component={TransactionList} initialParams={{mini: false, transactions: todos }} />
-
-//           <Drawer.Screen name="Dashboard" component={Dashboard} initialParams={{mini: false, transactions: todos }}/>
-//         </Drawer.Navigator>
-//       </NavigationContainer>
-//     );
-//   } else {
-//     return null;
-//   }
-
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
 
 
 import { createStackNavigator } from '@react-navigation/stack';
-import MainStackScreen from './MainStack';
+// import MainStackScreen from './MainStack';
 import ContextStack from './ContextStack';
 import TransactionForm from './components/TransactionForm'
 
 import { NavigationContainer } from '@react-navigation/native';
 
 import { TransactionProvider } from './components/providers/TransactionProvider';
+import {AuthenticationContext, AuthenticationProvider} from './components/providers/AuthenticationProvider'
 
 const RootStack = createStackNavigator();
+import LoginFlow from './Login'
+import Login from './pages/LoginScreen';
+import Signup from './components/SignUp';
+import Main from './pages/Main';
 
-export default function App() {
+const App = () => {
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const AuthContext = useContext(AuthenticationContext);
+  // useEffect(() => {
+  //   if (AuthContext.user) {
+  //     setIsAuthenticated(true);
+  //   }
+  // }, [])
+  // if (isAuthenticated) {
+  //   return (
+  //     <AuthenticationContext>
+  //       <Main />
+  //     </AuthenticationContext>
+  //   )
+  // } else {
   return (
-    <TransactionProvider>
-      <NavigationContainer>
-        <RootStack.Navigator mode="modal">
-          <RootStack.Screen
-            name="MoneyClip"
-            options={{ headerStyle: { height: 0 }, title: '' }}
-            component={ContextStack}
-          />
-          <RootStack.Screen name="Form" options={{ title: 'Create New Transaction' }} component={TransactionForm} />
-        </RootStack.Navigator>
-      </NavigationContainer>
-    </TransactionProvider>
+    <AuthenticationProvider>
+      <LoginFlow/>
+       {/* <NavigationContainer>
+         <RootStack.Navigator >
+           <RootStack.Screen
+             name="Login"
+             component={Login}
+           />
+           <RootStack.Screen name="Signup" component={Signup} />
+         </RootStack.Navigator>
+       </NavigationContainer> */}
+    </AuthenticationProvider>
   );
-}
+  }
+// }
+
+export default App;

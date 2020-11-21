@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import firestore from '../../firebase/firestore';
+import {firebaseConnection} from '../../firebase/firebase';
 
-const database = firestore.app.database();
+const database = firebaseConnection.database();
+// const database = firestore.app.database();
 
 const TransactionContext = React.createContext();
 
 const TransactionProvider = (props) => {
   const [transactions, updateTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-
   getTransactions = async () => {
-    let transactionRef = await database.ref('transactions/');
+    let transactionRef = await database.ref(`users/${props.user.uid}/transactions/`);
     let transactionListener = await transactionRef.on('value', (snapshot) => {
-      console.log('new records loading', loading);
-      // setLoading(true);
-      // updateTransactions([]);
       let updatedList = [];
       snapshot.forEach((doc) => {
         let transaction = doc.val();
@@ -30,7 +27,7 @@ const TransactionProvider = (props) => {
   useEffect(() => {
     getTransactions()
       .then((result) => {
-        console.log('getTransactions complete', transactions.length);
+        console.log('Provider: getTransactions() complete');
       })
   },[])
 

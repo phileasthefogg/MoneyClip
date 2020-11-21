@@ -1,18 +1,19 @@
 import * as firebase from 'firebase';
 import firebaseConfig from './config'
 
-let db;
+let firebaseConnection;
 // Initialize Firebase if needed, otherwise assign to existing connection
 if (!firebase.apps.length) {
-  db = firebase.initializeApp(firebaseConfig).firestore()
-  console.log('app new')
+  console.log('Initialized a new firebase connection.')
+  firebaseConnection = firebase.initializeApp(firebaseConfig)
 } else {
   console.log('app old')
-  db = firebase.app().firestore();
+  firebaseConnection = firebase.app();
 }
 
-module.exports.collection = db.collection('transactions');
-module.exports.app = firebase.app();
+// module.exports.collection = db.collection('transactions');
+// module.exports.app = firebase.app();
+export {firebaseConnection, firebase};
 
 /*
   FIRESTORE IMPLEMENTATION used in MainStack useEffect

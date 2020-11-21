@@ -1,3 +1,4 @@
+/* Not Using this file, rendering the root stack in App.js */
 import { createStackNavigator } from '@react-navigation/stack';
 import MainStackScreen from './MainStack';
 

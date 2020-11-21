@@ -8,6 +8,10 @@ const {width, height} = Dimensions.get('window');
 const TransactionList = (props) => {
   let transactions = props.transactions;
 
+  const clickHandler = (transaction) => {
+    console.log('clicked', transaction.id)
+  }
+
   let listStyle = {
     position: 'relative',
     display: 'flex',
@@ -19,7 +23,7 @@ const TransactionList = (props) => {
     height: height * .87
   }
   if (props.mini) {
-    listStyle.maxHeight = 255;
+    listStyle.maxHeight = height * .49;
     listStyle.borderWidth = 0
   }
 
@@ -29,7 +33,7 @@ const TransactionList = (props) => {
       <View style={listStyle}>
         <FlatList
           data={transactions}
-          renderItem={(element) => <ListItem item={element.item} />}
+          renderItem={(element) => <ListItem clickHandler={clickHandler} item={element.item} />}
           keyExtractor={(element) => element.id}
           style={styles.list}
         />
@@ -44,7 +48,9 @@ const styles = StyleSheet.create({
   list: {
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: '#A5BE00',
-    backgroundColor: '#EBF2FA',
+    marginLeft: 10,
+    marginRight: 10,
+    borderColor: '#EAE6DA',
+    backgroundColor: '#EAE6DA',
   },
 })

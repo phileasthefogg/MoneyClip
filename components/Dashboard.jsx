@@ -25,7 +25,7 @@ const Dashboard = (props) => {
       {(!props.mini) ? <Header navigation={props.navigation}/> : null}
       <View style={styles.container}>
         <View style={styles.dashboardBackground}>
-          <BarChart data={transactionsByMonth} w={width} h={height * .25}/>
+          <BarChart data={transactionsByMonth} w={width} h={(height) * .25}/>
         </View>
       </View>
       {/* <View style={{position: 'absolute', height: height * .30, top: 55, borderWidth: 2}}/> */}
@@ -45,13 +45,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   dashboardBackground: {
-    backgroundColor: '#ebf2fa',
+    backgroundColor: 'white',
     borderRadius: 15,
-    borderColor: '#679436',
-    borderWidth: 3,
+    borderColor: '#00249C',
+    // borderWidth: .25,
     padding: 25,
-    height: 300,
-    width: width,
+    height: (height * .37) ,
+    width: width-20,
+    marginLeft: 10,
+    marginRight: 10,
     flexDirection: 'row'
   }
 

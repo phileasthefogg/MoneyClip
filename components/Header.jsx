@@ -3,16 +3,18 @@ import { StyleSheet, Text, View, Button, ScrollView, TouchableOpacity, Dimension
 
 const width = Dimensions.get('window').width;
 
-const Header = ({navigation}) => {
+const Header = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.toolbar}/>
+      <View style={styles.toolbar} />
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <View style={styles.navButton}>
-            <Text style={{fontSize: 20}}>&#9776;</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={{ maxWidth: '12%'}}>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <View style={styles.navButton}>
+              <Text style={{ fontSize: 20 }}>&#9776;</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
@@ -23,21 +25,20 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     width: width,
-    // position: 'absolute',
     top: 0,
   },
   toolbar: {
-    // top: 0,
     height: 25,
-    backgroundColor: 'pink',
-    // backgroundColor: '#427AA1',
     width: width
   },
   header: {
-    backgroundColor: '#ebf2fa',
-    borderColor: 'orange',
-    borderWidth: 1,
-    height: 55
+    backgroundColor: 'white',
+    // borderColor: '#679436',
+    // borderWidth: 1,
+    borderRadius: 10,
+    height: 55,
+    marginLeft: 10,
+    marginRight: 10,
   },
   navButton: {
     display: 'flex',
@@ -45,6 +46,5 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     height: '100%',
     maxWidth: 40,
-    // borderWidth: 1
   }
 })

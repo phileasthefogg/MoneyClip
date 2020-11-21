@@ -1,10 +1,16 @@
 # MoneyClip
 
 ## Task List (On Top)
+
+-> Split Income and Expenditure into two 'sides'
+
+-> Transaction Detail Page
+  - Allow user to edit and or delete transactions (as well from List)
+
 -> Create bar chart summarizing data by month<br>
   + Created chart and bars displaying current and previous 6 months<br>
   + Added some functions to Dashboard in order to process data before sending on as props to chart itself<br>
-  - Add y axis (scaled) and x axis to chart<br>
+  + Add y axis (scaled) and x axis to chart<br>
   - Maybe some extra styling so it looks cleanish<br>
 - Research using D3 charts in react-native.  Create pie chart to display on Home<br>
 - Add field validation/sanitization on user input in Form<br>
