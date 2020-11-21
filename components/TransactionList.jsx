@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Dimensions } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, Button, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 import Header from './Header';
 import ListItem from './TransactionListItem';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const TransactionList = (props) => {
   let transactions = props.transactions;
@@ -29,13 +29,25 @@ const TransactionList = (props) => {
 
   return (
     <View>
-      {(!props.mini) ? <Header navigation={props.navigation}/> : null}
+      {(!props.mini) ? <Header navigation={props.navigation} /> : null}
       <View style={listStyle}>
         <FlatList
           data={transactions}
-          renderItem={(element) => <ListItem clickHandler={clickHandler} item={element.item} />}
+          renderItem={(element) => (
+            <ListItem clickHandler={clickHandler} item={element.item} />
+          )}
           keyExtractor={(element) => element.id}
           style={styles.list}
+          onScrollBeginDrag={(e) => {
+            if (props.toggleOpacity) {
+              props.toggleOpacity(.2);
+            }
+          }}
+          onScrollEndDrag={() => {
+            if (props.toggleOpacity) {
+              props.toggleOpacity(1);
+            }
+          }}
         />
       </View>
     </View>
@@ -50,7 +62,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginLeft: 10,
     marginRight: 10,
-    borderColor: '#EAE6DA',
-    backgroundColor: '#EAE6DA',
+    borderColor: '#555459',
+    backgroundColor: '#555459',
   },
 })
