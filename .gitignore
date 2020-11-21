@@ -13,3 +13,5 @@ web-build/
 .DS_Store
 
 firebase/config.js
+*.md
+google-services.json

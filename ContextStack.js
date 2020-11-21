@@ -5,32 +5,19 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import Home from './components/Home';
 import TransactionList from './components/TransactionList';
-import Header from './components/Header';
+// import Header from './components/Header';
 import Dashboard from './components/Dashboard';
-import testData from './testData';
+// import testData from './testData';
 import CustomDrawerContent from './components/NavDrawerComponent'
 
 import { TransactionContext } from './components/providers/TransactionProvider';
 import { AuthenticationContext } from './components/providers/AuthenticationProvider';
-
-
-// import firestore from './firebase/firestore';
-// const transactions = firestore.collection;
-// const database = firestore.app.database();
 
 const Drawer = createDrawerNavigator();
 
 const ContextStack = (props) => {
   const cashContext = useContext(TransactionContext);
   const authContext = useContext(AuthenticationContext)
-  // React.useLayoutEffect(() => {
-  //   props.navigation.setOptions({
-  //     logout: logoutNavigation
-  //   });
-  // }, [props.navigation]);
-  // if (cashContext.transactions.length) {
-    // console.log('contextTransactions', cashContext.transactions.length);
-    // setCount(cashContext.transactions.length);
     return (
       <Drawer.Navigator
         drawerPosition="left"
@@ -66,9 +53,6 @@ const ContextStack = (props) => {
       </Drawer.Navigator>
 
     )
-  // } else {
-  //   return <View><Text>Couldnt Load your Stack</Text></View>
-  // }
 }
 
 const styles = StyleSheet.create({

@@ -3,9 +3,9 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import {firebase} from './firebase/firebase'
 
 
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import { NavigationContainer } from '@react-navigation/native';
+import { createAppContainer, createSwitchNavigator. createStackNavigator. NavigationContainer } from 'react-navigation';
 
 import {AuthenticationContext} from './components/providers/AuthenticationProvider'
 
