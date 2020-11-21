@@ -11,6 +11,7 @@ import testData from './testData';
 import CustomDrawerContent from './components/NavDrawerComponent'
 
 import { TransactionContext } from './components/providers/TransactionProvider';
+import { AuthenticationContext } from './components/providers/AuthenticationProvider';
 
 
 // import firestore from './firebase/firestore';
@@ -20,21 +21,20 @@ import { TransactionContext } from './components/providers/TransactionProvider';
 const Drawer = createDrawerNavigator();
 
 const ContextStack = (props) => {
-  const appState = useContext(TransactionContext);
-  console.log('CSPROPS', Object.keys(props))
-  const logoutNavigation = props.navToLogin;
+  const cashContext = useContext(TransactionContext);
+  const authContext = useContext(AuthenticationContext)
   // React.useLayoutEffect(() => {
   //   props.navigation.setOptions({
   //     logout: logoutNavigation
   //   });
   // }, [props.navigation]);
-  // if (appState.transactions.length) {
-    // console.log('contextTransactions', appState.transactions.length);
-    // setCount(appState.transactions.length);
+  // if (cashContext.transactions.length) {
+    // console.log('contextTransactions', cashContext.transactions.length);
+    // setCount(cashContext.transactions.length);
     return (
       <Drawer.Navigator
         drawerPosition="left"
-        drawerContent={(props) => <CustomDrawerContent {...props} logout={logoutNavigation} user={props.user}/>}
+        drawerContent={(props) => <CustomDrawerContent {...props} user={authContext.user}/>}
         drawerContentOptions={{
           contentContainerStyle: {
             display: 'flex',
@@ -53,15 +53,15 @@ const ContextStack = (props) => {
         }}
       >
         <Drawer.Screen name="Home" screenOptions={{ drawerLabel: 'Home' }}  >
-          {props => <Home {...props} transactions={appState.transactions} />}
+          {props => <Home {...props} transactions={cashContext.transactions} />}
         </Drawer.Screen>
 
-        <Drawer.Screen name="TransactionList" initialParams={{ mini: false, transactions: appState.transactions }}>
-          {props => <TransactionList {...props} transactions={appState.transactions} />}
+        <Drawer.Screen name="TransactionList" initialParams={{ mini: false, transactions: cashContext.transactions }}>
+          {props => <TransactionList {...props} transactions={cashContext.transactions} />}
         </Drawer.Screen>
 
-        <Drawer.Screen name="Dashboard" initialParams={{ mini: false, transactions: appState.transactions }}>
-          {props => <Dashboard {...props} transactions={appState.transactions} />}
+        <Drawer.Screen name="Dashboard" initialParams={{ mini: false, transactions: cashContext.transactions }}>
+          {props => <Dashboard {...props} transactions={cashContext.transactions} />}
         </Drawer.Screen>
       </Drawer.Navigator>
 

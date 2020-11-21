@@ -14,19 +14,16 @@ import {AuthenticationContext} from '../components/providers/AuthenticationProvi
 const RootStack = createStackNavigator();
 
 
-const Home = ({navigation}) => {
-  const AuthContext = useContext(AuthenticationContext);
-  const authorizedUser = AuthContext.user;
-  const navToLogin = () => {
-    navigation.navigate('LoginScreen');
-  }
+const Main = ({navigation, user}) => {
+  // const AuthContext = useContext(AuthenticationContext);
+  const authorizedUser = user;
   return (
     <TransactionProvider user={authorizedUser}>
       <View style={{flex: 1, width: '100%'}}>
       <NavigationContainer>
         <RootStack.Navigator mode="modal" >
           <RootStack.Screen name="MoneyClip" options={{ headerStyle: { height: 0 }, title: '' }}>
-            {props => <ContextStack {...props} navToLogin={navToLogin} user={authorizedUser}/>}
+            {props => <ContextStack {...props} user={authorizedUser}/>}
           </RootStack.Screen>
           <RootStack.Screen name="Form" options={{ title: 'Create New Transaction' }}>
             {props => <TransactionForm {...props} user={authorizedUser}/>}
@@ -38,4 +35,4 @@ const Home = ({navigation}) => {
   );
 }
 
-export default Home;
+export default Main;

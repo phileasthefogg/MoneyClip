@@ -35,9 +35,6 @@ const CustomDrawerContent = (props) => {
               .catch(() => {
                 console.log('couldnt sign you out')
               })
-              .finally(() => {
-                props.logout()
-              })
           }}
           title="Logout"
         />
