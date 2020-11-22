@@ -28,7 +28,6 @@ const Dashboard = (props) => {
           <BarChart data={transactionsByMonth} w={width} h={(height) * .25}/>
         </View>
       </View>
-      {/* <View style={{position: 'absolute', height: height * .30, top: 55, borderWidth: 2}}/> */}
     </View>
      :
     <ActivityIndicator></ActivityIndicator>
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
     borderColor: '#00249C',
     // borderWidth: .25,
     padding: 25,
-    height: (height * .37) ,
+    minHeight: (height * .37),
     width: width-20,
     marginLeft: 10,
     marginRight: 10,

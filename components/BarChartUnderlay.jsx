@@ -10,16 +10,16 @@ const formatter = Intl.DateTimeFormat("en", { month: "short" })
 const lerp = (v0, v1, t) => {
   return v0 + t * (v1 - v0);
 }
-const ROW_HEIGHT = 26;
 const BarChartUnderlay = (props) => {
   const { minY, maxY, step, transactionsByMonth, height } = props;
+  const ROW_HEIGHT = height / 8;
   let currentMonth = new Date().getMonth();
   return (
     <View style={[StyleSheet.absoluteFill]}>
       <View style={{ flex: 1 }}>
         {[1, 0.66, 0.33, 0].map((t) => {
           return (
-            <View style={{ flex: 1, justifyContent: 'space-between', top: 10 }} key={t}>
+            <View style={{ flex: 1, justifyContent: 'space-between', top: '4.5%' }} key={t}>
               <View
                 style={{
                   flexDirection: 'row',

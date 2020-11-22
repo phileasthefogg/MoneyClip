@@ -29,15 +29,16 @@ const BarChart = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.background} >
-      <Underlay minY={0} maxY={maxY} step={barWidth} height={200} transactionsByMonth={transactionsByMonth}/>
+      <Underlay minY={0} maxY={maxY} step={barWidth} height={props.h} transactionsByMonth={transactionsByMonth}/>
       <View style={styles.chart}>
         {transactionsByMonth.map((month, i) => {
           let monthStr = formatter.format(new Date().setMonth(currentMonth + i - 6));
           if (month) {
             let contentStyle = {
+              bottom: 2,
               backgroundColor: '#88B04B',
               left: i * barWidth,
-              height: lerp(0, 200, month / maxY)
+              height: lerp(0, props.h, month / maxY)
             }
             return (
               <View style={ styles.barContainer } key={monthStr}>
@@ -65,16 +66,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: '100%',
     width: '100%',
-    margin: '10%'
+    margin: '10%',
   },
   chart: {
     height: '100%',
     width: '100%',
-    left: 22,
-    bottom: 20
+    left: '6.5%',
+    bottom: '8.5%',
   },
   bar: {
-    backgroundColor: 'rebeccapurple',
     position: 'absolute',
     display: 'flex',
     bottom: 0,
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     // height: 10,
     marginLeft: 11,
     marginRight: 10,
-    borderWidth: 1
   },
   barContainer: {
     position: 'absolute',
