@@ -3,22 +3,39 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Button, Switch, ToastAndroid } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Toast from './ToastAndroid'
-import {firebaseConnection} from '../firebase/firebase';
-// const transactions = firestore.collection;
+import { firebaseConnection } from '../firebase/firebase';
+
 const database = firebaseConnection.database();
 import Tags from 'react-native-tags'
 
-const generateHash = () => {
-  let constant = 20;
-  let newID = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'.split('');
-  for (var x = 1; x <= constant; x++) {
-    newID += characters[Math.floor(Math.random() * 62)]
-  }
-  return newID;
-}
+import styled from 'styled-components/native'
 
-
+const FormContent = styled.View`
+  display: flex;
+  alignItems: center;
+  margin: 10px;
+  padding: 5px;
+`;
+const InputField = styled.TextInput`
+  lineHeight: 20px;
+  fontSize: 20px;
+  width: 100%;
+`;
+const TagContainer = styled.TouchableOpacity`
+  borderRadius: 5px;
+  backgroundColor: #A5BE00;
+  padding: 5px;
+  margin: 2.5px;
+`;
+const HR = styled.View`
+  marginBottom:10px;
+  marginTop: 10px;
+  width: 70%;
+  borderColor: lightgrey;
+  height: 5px;
+  borderBottomWidth: 1px;
+  paddingBottom: 5px;
+`;
 
 const Form = (props) => {
   const [form, updateForm] = useState({});
@@ -26,31 +43,39 @@ const Form = (props) => {
   const [amt, updateAmt] = useState(0);
   const [cash, toggleCash] = useState(false);
 
-  const [visibleToast, setvisibleToast] = useState(false);
+  const [visibleToast, setVisibleToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState('Saved Transaction')
+  useEffect(() => setVisibleToast(false), [visibleToast]);
 
-  useEffect(() => setvisibleToast(false), [visibleToast]);
+  const displayToast = (message) => {
+    setToastMsg(message);
+    setVisibleToast(true);
+  }
 
-  const validateRecord = (record) => {
+  const getMissingFields = (record) => {
     let hasDate = record.Date !== undefined;
     let hasAmount = record.Amount !== undefined;
     let hasDescription = record.Description !== undefined;
     let hasTypes = record.Type !== undefined;
-    console.log(
-      hasDate, hasAmount, hasDescription, hasTypes
-    )
     if (hasDate && hasAmount && hasDescription && hasTypes) {
-      return true;
+      return [];
     } else {
-      return false;
+      let availableFields = Object.keys(record);
+      let missingFields = ['Date', 'Amount', 'Description', 'Type'];
+      for (let i = 0; i <= availableFields.length - 1; i++) {
+        let idxToRemove = missingFields.indexOf(availableFields[i]);
+        missingFields.splice(idxToRemove, 1);
+      }
+      return missingFields;
     }
   }
   const createRecord = async (newEntry) => {
-    let newID = generateHash();
-    if (validateRecord(newEntry)) {
+    const missingFields = getMissingFields(newEntry);
+    if (missingFields.length === 0) {
       database.ref(`/users/${props.user.uid}/transactions/`).push(newEntry);
       return new Promise((resolve, reject) => resolve('success'))
     } else {
-      return new Promise((resolve, reject) => reject('Something went wrong'))
+      return new Promise((resolve, reject) => reject(missingFields))
     }
   }
   const updateType = (string) => {
@@ -74,65 +99,61 @@ const Form = (props) => {
   }
 
   const renderTags = ({ tag, index, onPress, deleteTagOnPress, readonly }) => (
-    <TouchableOpacity style={styles.tagContainer} key={`${tag}-${index}`} onPress={onPress} >
+    <TagContainer key={`${tag}-${index}`} onPress={onPress} >
       <Text style={{ color: 'white', lineHeight: 12, fontSize: 12 }}>
         {tag}
       </Text>
-    </TouchableOpacity>
+    </TagContainer>
   )
-
   return (
-    <View style={styles.container}>
+    <View style={{display: 'flex'}}>
       <StatusBar style="dark" />
-      <View style={styles.form}>
-          <TouchableOpacity
-            onPress={() => { toggleDatePicker(true) }}
-            style={{ height: 20, width: '100%',alignItems: 'flex-end' }}>
-            <Text
-              style={{ lineHeight: 20, color: 'grey', fontSize: 15 }}
-              label="Date"
-              name="date"
-              onChangeText={(text) => { updateField('date', text) }}
-            >
-              {(form.Date) ? new Date(form.Date).toDateString() : 'Date'}
-            </Text>
-          </TouchableOpacity>
-          {(datePicker) ?
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={Date.now()}
-              mode={"date"}
-              is24Hour={true}
-              display="default"
-              onChange={(e) => {
-                updateField('Date', e.nativeEvent.timestamp);
-                toggleDatePicker(false);
-              }}
-            />
-            : null
-          }
-
-        <View style={styles.horizontalRule}>
-        </View>
-          <TextInput
-            style={styles.inputField}
-            label="Amount"
-            name="Amount"
-            onChangeText={(text) => {
-              updateField('Amount', text)
-            }}
-            placeholder="$0.00"
-            keyboardType={'number-pad'}
-            value={(amt) ? ('$' + amt.toFixed(2).toString()) : null}
-            onEndEditing={() => {
-              updateAmt(form.Amount);
+      <FormContent>
+        <TouchableOpacity
+          onPress={() => { toggleDatePicker(true) }}
+          style={{ height: 20, width: '100%', alignItems: 'flex-end' }}>
+          <Text
+            style={{ lineHeight: 20, color: 'grey', fontSize: 15 }}
+            label="Date"
+            name="date"
+            onChangeText={(text) => { updateField('date', text) }}
+          >
+            {(form.Date) ? new Date(form.Date).toDateString() : 'Date'}
+          </Text>
+        </TouchableOpacity>
+        {(datePicker) ?
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={Date.now()}
+            mode={"date"}
+            is24Hour={true}
+            display="default"
+            onChange={(e) => {
+              updateField('Date', e.nativeEvent.timestamp);
+              toggleDatePicker(false);
             }}
           />
+          : null
+        }
+
+        <HR />
+        <InputField
+          label="Amount"
+          name="Amount"
+          onChangeText={(text) => {
+            updateField('Amount', text)
+          }}
+          placeholder="$0.00"
+          keyboardType={'number-pad'}
+          value={(amt) ? ('$' + amt.toFixed(2).toString()) : null}
+          onEndEditing={() => {
+            updateAmt(form.Amount);
+          }}
+        />
 
 
-        <View style={styles.horizontalRule}/>
-        <TextInput
-          style={styles.inputField}
+        <HR />
+        <InputField
           label="Description"
           name="Description"
           value={form.Description}
@@ -142,8 +163,8 @@ const Form = (props) => {
           }}
         />
 
-        <View style={styles.horizontalRule}/>
-        <Text style={{ fontSize: 12, color: 'grey' , alignSelf: 'flex-start'}}>Tags:</Text>
+        <HR />
+        <Text style={{ fontSize: 12, color: 'grey', alignSelf: 'flex-start' }}>Tags:</Text>
         <Tags
           textInputProps={{
             placeholder: "Type"
@@ -163,11 +184,10 @@ const Form = (props) => {
             opacity: 1
           }}
           renderTag={renderTags}
-          />
+        />
 
-        <View style={styles.horizontalRule}/>
-        <TextInput
-          style={styles.inputField}
+        <HR />
+        <InputField
           label="Comment"
           name="Comment"
           value={form.Comment}
@@ -175,15 +195,15 @@ const Form = (props) => {
           onChangeText={(text) => { updateField('Comment', text) }}
         />
         <Switch
-          style={{alignSelf:'flex-end'}}
+          style={{ alignSelf: 'flex-end' }}
           onValueChange={(value) => {
             toggleCash(value);
             updateField('Cash', value)
           }}
-          value={cash}/>
-      </View>
+          value={cash} />
+      </FormContent>
 
-      <Toast visible={visibleToast} message="Saved Transaction" />
+      <Toast visible={visibleToast} message={toastMsg} />
 
       <Button
         title="Submit"
@@ -191,48 +211,15 @@ const Form = (props) => {
           createRecord(form)
             .then((result) => {
               // console.log('successfully added record');
-              setvisibleToast(true);
-              props.navigation.navigate('MoneyClip', {reset: 'true'});
+              displayToast('Successfully Created Record');
+              props.navigation.navigate('MoneyClip', { reset: 'true' });
             })
             .catch((err) => {
-              console.error('ERROR OCCURED', err)
+              displayToast(`Missing some fields: ${err.join(', ')}`)
             })
         }} />
-
     </View>
   )
 }
 
 export default Form;
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex'
-  },
-  form: {
-    display: 'flex',
-    alignItems: 'center',
-    margin: 10,
-    padding: 5
-  },
-  inputField: {
-    lineHeight: 20,
-    fontSize: 20,
-    width: '100%',
-  },
-  tagContainer: {
-    borderRadius: 5,
-    backgroundColor: '#A5BE00',
-    padding: 5,
-    margin: 2.5,
-  },
-  horizontalRule: {
-    marginBottom:10,
-    marginTop: 10,
-    width: '70%',
-    borderColor: 'lightgrey',
-    height: 5,
-    borderBottomWidth: 1,
-    paddingBottom: 5,
-  }
-})
