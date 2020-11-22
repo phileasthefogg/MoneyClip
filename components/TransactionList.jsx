@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Button, FlatList, Dimensions, TouchableOpacity 
 import Header from './Header';
 import ListItem from './TransactionListItem';
 
+import styled from 'styled-components/native';
+
 const { width, height } = Dimensions.get('window');
 
 const TransactionList = (props) => {
@@ -14,13 +16,10 @@ const TransactionList = (props) => {
 
   let listStyle = {
     position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     top: 10,
     padding: 1,
     borderWidth: 3,
-    height: height * .87
+    maxHeight: height * .87
   }
   if (props.mini) {
     listStyle.maxHeight = height * .49;
@@ -58,11 +57,9 @@ export default TransactionList;
 
 const styles = StyleSheet.create({
   list: {
-    borderRadius: 5,
     borderWidth: 2,
     marginLeft: 10,
     marginRight: 10,
-    borderColor: '#555459',
     backgroundColor: '#555459',
   },
 })
